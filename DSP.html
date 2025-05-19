@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cryptography Solver GROUP-4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e1e2d, #2a2a3d);
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #333;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 400px;
+        }
+        h2 {
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+        label, select, input, textarea, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        textarea {
+            height: 80px;
+            padding: 10px;
+            background: #444;
+            border: none;
+            color: #fff;
+            resize: none;
+        }
+        input, select, button {
+            padding: 10px;
+            background: #555;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #666;
+        }
+        pre {
+            background: #222;
+            padding: 10px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        function processText() {
+            const text = document.getElementById('text').value.toUpperCase().replace(/[^A-Z]/g, '');
+            const key = document.getElementById('key').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const method = document.getElementById('method').value;
+            let result = "";
+
+            if (method === 'long-keys') {
+                result = text.split('').map((char, i) => {
+                    let shift = (key.charCodeAt(i % key.length) - 65) % 26;
+                    return String.fromCharCode(((char.charCodeAt() - 65 + shift) % 26) + 65);
+                }).join('');
+            } else if (method === 'vigenere') {
+                result = text.split('').map((char, i) => {
+                    let shift = (key.charCodeAt(i % key.length) - 65) % 26;
+                    return String.fromCharCode(((char.charCodeAt() - 65 + shift) % 26) + 65);
+                }).join('');
+            } else if (method === 'gronsfeld') {
+                result = text.split('').map((char, i) => {
+                    let shift = parseInt(key[i % key.length]);
+                    return String.fromCharCode(((char.charCodeAt() - 65 + shift) % 26) + 65);
+                }).join('');
+            }
+
+            document.getElementById('result').textContent = "Ciphertext: " + result;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Cryptography Solver</h2>
+        <label for="text">Enter Plaintext:</label>
+        <textarea id="text" placeholder="Enter your message..."></textarea>
+        <label for="key">Enter Key:</label>
+        <input type="text" id="key" placeholder="Enter key...">
+        <label for="method">Select Cipher Method:</label>
+        <select id="method">
+            <option value="long-keys">Long Keys</option>
+            <option value="vigenere">Variation on Vigenère</option>
+            <option value="gronsfeld">Gronsfeld Cipher</option>
+        </select>
+        <button onclick="processText()">Encrypt</button>
+        <h3>Result:</h3>
+        <pre id="result"></pre>
+    </div>
+</body>
+</html>
